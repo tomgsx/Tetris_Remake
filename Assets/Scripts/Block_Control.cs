@@ -3,21 +3,22 @@ using System.Collections;
 
 public class Block_Control : MonoBehaviour {
 
-    public bool playerControlled;
-    public bool safeMove;
-    public bool isFalling;
-    public bool isInitialized;
-       
     public Vector3 tempMove;
 
     public Block_Spawner blockSpawner;
 
     public Transform[] childBlocks;
 
+    public bool playerControlled;
+    public bool safeMove;
+    public bool isFalling;
+    public bool isInitialized;
+
     public float blockTick;
-    public float blockTime;
     public float moveTick;
-    public float moveTime;
+
+    private float blockTime;
+    private float moveTime;
     
     // Use this for initialization
 	void Start () {
@@ -31,13 +32,12 @@ public class Block_Control : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
         if (playerControlled)
         {
             InitializeObjects();
+            RotateMovement();
             BlockDrop();
-            SideMovement();
-            //RotateMovement();
+            SideMovement();            
         }
 	}
 
@@ -49,7 +49,8 @@ public class Block_Control : MonoBehaviour {
             for (int i = 0; i < transform.childCount; i++)
             {
                 childBlocks[i] = transform.GetChild(i);
-                childBlocks[i].tag = "Player";
+                //childBlocks[i].tag = "Player";
+                childBlocks[i].gameObject.GetComponent<Collider>().enabled = false;
             }
             isInitialized = true;
         }        
@@ -63,7 +64,7 @@ public class Block_Control : MonoBehaviour {
             Vector3 pos = transform.position;
             if (Input.GetAxisRaw("Vertical") < 0)
             {
-                tempMove = new Vector3(pos.x, pos.y - 0.5f, pos.z);
+                tempMove = new Vector3(pos.x, pos.y - 1, pos.z);
                 CollisionCheck(Vector3.down);
                 if (safeMove)
                 {
@@ -75,7 +76,8 @@ public class Block_Control : MonoBehaviour {
                     playerControlled = false;
                     for (int i = 0; i < transform.childCount; i++)
                     {
-                        childBlocks[i].tag = "Obstacle";
+                        //childBlocks[i].tag = "Block";
+                        childBlocks[i].gameObject.GetComponent<Collider>().enabled = true;
                     }
                     CallSpawner();
                 }
@@ -89,7 +91,7 @@ public class Block_Control : MonoBehaviour {
                 CollisionCheck(-Vector3.up);
                 if (safeMove)
                 {
-                    transform.position = new Vector3(pos.x, pos.y - 0.5f, pos.z);
+                    transform.position = new Vector3(pos.x, pos.y - 1, pos.z);
                     blockTick = blockTime;
                 }
                 else
@@ -98,7 +100,8 @@ public class Block_Control : MonoBehaviour {
                     playerControlled = false;
                     for (int i = 0; i < transform.childCount; i++)
                     {
-                        childBlocks[i].tag = "Obstacle";
+                        //childBlocks[i].tag = "Block";
+                        childBlocks[i].gameObject.GetComponent<Collider>().enabled = true;
                     }
                     CallSpawner();
                 }    
@@ -114,7 +117,7 @@ public class Block_Control : MonoBehaviour {
         {
             if (Input.GetAxisRaw("Horizontal") > 0)
             {
-                tempMove = new Vector3(pos.x + 0.5f, pos.y, pos.z);
+                tempMove = new Vector3(pos.x + 1, pos.y, pos.z);
                 CollisionCheck(Vector3.right);
                 if (safeMove)
                 {
@@ -123,7 +126,7 @@ public class Block_Control : MonoBehaviour {
             }
             else if (Input.GetAxisRaw("Horizontal") < 0)
             {
-                tempMove = new Vector3(pos.x - 0.5f, pos.y, pos.z);
+                tempMove = new Vector3(pos.x - 1, pos.y, pos.z);
                 CollisionCheck(Vector3.left);
                 if (safeMove)
                 {
@@ -140,7 +143,7 @@ public class Block_Control : MonoBehaviour {
         {
             if (Input.GetAxisRaw("Horizontal") > 0)
             {
-                tempMove = new Vector3(pos.x + 0.5f, pos.y, pos.z);
+                tempMove = new Vector3(pos.x + 1, pos.y, pos.z);
                 CollisionCheck(Vector3.right);
                 if (safeMove)
                 {
@@ -149,7 +152,7 @@ public class Block_Control : MonoBehaviour {
             }
             else if (Input.GetAxisRaw("Horizontal") < 0)
             {
-                tempMove = new Vector3(pos.x - 0.5f, pos.y, pos.z);
+                tempMove = new Vector3(pos.x - 1, pos.y, pos.z);
                 CollisionCheck(Vector3.left);
                 if (safeMove)
                 {
@@ -161,37 +164,40 @@ public class Block_Control : MonoBehaviour {
         
     }
 
-    /* Rotation disabled until I complete and figure out the raycast details
+    // Jump input to rotate active block if no obstacles in the way
     void RotateMovement(){
         if (Input.anyKeyDown)
         {
             if (Input.GetAxisRaw("Jump") > 0)
             {
-                transform.Rotate(0, 0, 90);
+                if (gameObject.name != "O_block(Clone)")
+                {
+                    transform.Rotate(0, 0, 90);
+                    foreach (Transform childBlock in childBlocks)
+                    {
+                        if (Physics.CheckSphere(childBlock.position, 0.49f))
+                        {
+                            transform.Rotate(0, 0, -90);
+                            Debug.Log("Cannot rotate");
+                            break;
+                        }
+                    }
+                }
             }
         }        
     }
-    */ 
 
-
-    /* Raycast to detect clearance of side and falling movement
-     * (needs bulked up for multiple raycasts from each exposed block
-     * so that pieces can "fit" together like puzzle pieces)
-    */
     bool CollisionCheck(Vector3 targetPosition)
     {
         foreach (Transform childBlock in childBlocks)
         {
             RaycastHit objectHit;
-            Debug.DrawRay(childBlock.position, targetPosition * 0.5f, Color.green);
-            if (Physics.Raycast(childBlock.position, targetPosition, out objectHit, 0.5f))
+            Debug.DrawRay(childBlock.position, targetPosition * 1, Color.green);
+            if (Physics.Raycast(childBlock.position, targetPosition, out objectHit,1))
             {
-                if (!objectHit.transform.CompareTag("Player"))
-                {
-                    safeMove = false;
-                    Debug.Log("Cannot move there");
-                    return false;
-                }                
+                safeMove = false;
+                Debug.Log("Cannot move there");
+                return false;              
             }
             else
             {
@@ -200,26 +206,6 @@ public class Block_Control : MonoBehaviour {
         }
         return true;
     }
-
-    /*void CollisionCheck(Vector3 targetPosition)
-    {
-        RaycastHit objectHit;
-        Debug.DrawRay(transform.position, targetPosition * 0.5f, Color.green);
-        if (Physics.Raycast(transform.position, targetPosition, out objectHit, 0.5f))
-        {
-            safeMove = false;
-            Debug.Log("Cannot move there");
-        }
-        else
-        {
-            safeMove = true;
-        }
-    }*/
-
-
-
-
-
 
     void CallSpawner()
     {
