@@ -26,4 +26,11 @@ public class Score_Tracker : MonoBehaviour {
         score += 1;
         scoreText.text = score.ToString();
     }
+
+    // Called by Row_Scanner when a row is completed
+    public void NewRow()
+    {
+        score += 16;
+        scoreText.text = score.ToString();
+    }
 }

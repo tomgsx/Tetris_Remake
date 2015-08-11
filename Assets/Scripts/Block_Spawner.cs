@@ -10,16 +10,12 @@ public class Block_Spawner : MonoBehaviour
     private GameObject nextBlock;
     private Image nextImage;
     private Score_Tracker score;
-    private Row_Scanner row;
 
     // Use this for initialization
     void Start()
     {
         nextImage = GameObject.Find("Canvas/Image").GetComponent<Image>();
         score = GetComponent<Score_Tracker>();
-        /* Still need to figure out how to best clear completed rows
-        row = GetComponent<Row_Scanner>();
-        */
         NextBlock();
         CreateBlock();
     }
@@ -35,9 +31,6 @@ public class Block_Spawner : MonoBehaviour
     // Creates the new block
     public void CreateBlock()
     {
-        /* Waiting on completion of the CheckRows function in Row_Scanner
-        row.CheckRows();
-        */
         if (nextBlock != null)
         {
             Instantiate(nextBlock, new Vector3(7, 20, 0), Quaternion.identity);

@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3373092}
   - 65: {fileID: 6532410}
   - 23: {fileID: 2396250}
+  - 114: {fileID: 11479274}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Block
@@ -29,6 +30,7 @@ GameObject:
   - 33: {fileID: 3388608}
   - 65: {fileID: 6545814}
   - 23: {fileID: 2376674}
+  - 114: {fileID: 11488874}
   m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Block
@@ -47,6 +49,7 @@ GameObject:
   - 33: {fileID: 3370328}
   - 65: {fileID: 6574828}
   - 23: {fileID: 2384522}
+  - 114: {fileID: 11427090}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Block
@@ -81,6 +84,7 @@ GameObject:
   - 33: {fileID: 3330438}
   - 65: {fileID: 6550782}
   - 23: {fileID: 2335864}
+  - 114: {fileID: 11451368}
   m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Block
@@ -344,6 +348,58 @@ MonoBehaviour:
   isInitialized: 0
   blockTick: 0
   moveTick: 0
+--- !u!114 &11427090
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 145514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646d9a5fbfffce74da49c2540d934f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yPos: 0
+  blockControl: {fileID: 0}
+--- !u!114 &11451368
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 178138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646d9a5fbfffce74da49c2540d934f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yPos: 0
+  blockControl: {fileID: 0}
+--- !u!114 &11479274
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646d9a5fbfffce74da49c2540d934f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yPos: 0
+  blockControl: {fileID: 0}
+--- !u!114 &11488874
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646d9a5fbfffce74da49c2540d934f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yPos: 0
+  blockControl: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
