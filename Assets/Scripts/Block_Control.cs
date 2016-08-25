@@ -210,7 +210,7 @@ public class Block_Control : MonoBehaviour {
     // Create new player controlled block
     void CallSpawner()
     {
-        if (blockSpawner != null)
+		if (blockSpawner != null && Time.timeScale!=0f) // add time scale
         {
             blockSpawner.CreateBlock();
         }        
